@@ -149,14 +149,15 @@ fig_3d = go.Figure(data=[go.Surface(
     colorbar=dict(title="Relative Strain", len=0.6)
 )])
 
+# CRITICAL TYPO REMOVED: Auto-scaling enabled by omitting the 'range' field completely
 fig_3d.update_layout(
     template="plotly_white",
     height=550,
     margin=dict(l=0, r=0, t=10, b=0),
     scene=dict(
-        xaxis=dict(title="Flapwise Deflection (m)", range=[-20, 20]),
-        yaxis=dict(title="Thickness Profile (m)", range=[-5, 5]),
-        zaxis=dict(title="Blade Span (m)", range=),
+        xaxis=dict(title="Flapwise Deflection (m)"),
+        yaxis=dict(title="Thickness Profile (m)"),
+        zaxis=dict(title="Blade Span (m)"),
         aspectratio=dict(x=1, y=1, z=2)
     )
 )
