@@ -32,7 +32,7 @@ st.markdown("""
         border: 1px solid rgba(56, 189, 248, 0.2) !important;
         padding: 20px 24px !important;
         border-radius: 4px !important;
-        box-shadow: min-width 0px, 0 4px 30px rgba(0, 0, 0, 0.4) !important;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4) !important;
         transition: border 0.3s ease;
     }
     div[data-testid="stMetric"]:hover {
@@ -171,15 +171,15 @@ Z = z_mesh
 
 strain_intensity = (mode_deflection ** 2) * (crack_depth + 10)
 
+# CRITICAL FIX: Restructured the colorbar dict parameters to map to modern Plotly API specifications
 fig_3d = go.Figure(data=[go.Surface(
     x=X, y=Y, z=Z, 
     surfacecolor=strain_intensity, 
     colorscale="Plasma",
     colorbar=dict(
-        title="Relative Strain", 
-        len=0.6,
-        titlefont=dict(color="#94a3b8"),
-        tickfont=dict(color="#64748b")
+        title=dict(text="Relative Strain", font=dict(color="#94a3b8")),
+        tickfont=dict(color="#64748b"),
+        len=0.6
     )
 )])
 
