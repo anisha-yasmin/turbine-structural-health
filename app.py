@@ -107,7 +107,7 @@ with col4:
 
 st.markdown("---")
 
-# --- NEW VISUALIZATION: LIVE 3D STRUT DEFORMATION SOLVER ---
+# --- VISUALIZATION 1: LIVE 3D STRUT DEFORMATION SOLVER ---
 st.subheader("3D Finite Element Deformation Mesh (Modal Displacement Analysis)")
 st.markdown("Real-time rendering of the fundamental flexural bending mode shape. Colors represent structural Von Mises strain concentrations.")
 
@@ -130,7 +130,7 @@ mode_deflection = (np.cosh(1.875 * norm_z) - np.cos(1.875 * norm_z)) - 0.734 * (
 # Dynamic displacement amplification factor scales with structural damage
 scaling_factor = 2.0 * (1.0 + (crack_depth / 15.0))
 if is_resonant:
-    scaling_factor *= 2.5 # Visual oscillation spike during critical resonance speeds
+    scaling_factor *= 2.5 
 
 delta_x = mode_deflection * scaling_factor
 
