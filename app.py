@@ -42,7 +42,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 st.title("ROTORDYNAMIC STRUCTURAL HEALTH MONITORING (SHM) PLATFORM")
-st.markdown("Predictive Aeroelasticity & Structural Dynamics Diagnostics Suite | Cantilever Composite Blade**")
+st.markdown("**Predictive Aeroelasticity & Structural Dynamics Diagnostics Suite | Cantilever Composite Blade**")
 st.markdown("---")
 
 # --- SIDEBAR TUNING UNIT ---
@@ -97,18 +97,25 @@ fig_campbell = go.Figure()
 fig_campbell.add_trace(go.Scatter(x=rpm_range, y=freq_1P, name="1P Rotor Order (Unbalance Forcing)", line=dict(color="#60a5fa", width=2, dash="dash")))
 fig_campbell.add_trace(go.Scatter(x=rpm_range, y=freq_3P, name="3P Blade Passing Frequency (Aerodynamic Forcing)", line=dict(color="#f43f5e", width=2.5, dash="dot")))
 
-# Plot Stiffness Frequency Limits (Replaced raw LaTeX string delimiters to prevent ValueError validation crash)
+# Plot Stiffness Frequency Limits
 fig_campbell.add_trace(go.Scatter(x=rpm_range, y=np.ones_like(rpm_range) * omega_1, name="1st Flexural Mode (Flapwise ω1)", line=dict(color="#34d399", width=3)))
 fig_campbell.add_trace(go.Scatter(x=rpm_range, y=np.ones_like(rpm_range) * omega_2, name="2nd Flexural Mode (Edgewise ω2)", line=dict(color="#a78bfa", width=3)))
 
 # Plot Current Operational State Indicator
 fig_campbell.add_trace(go.Scatter(x=[rpm, rpm], y=[0, 2.5], name="Current Operational RPM", line=dict(color="#ffffff", width=2)))
 
+# CRITICAL FIX: Re-mapped the layouts using clean flat string styling keys to bypass the dictionary ValueError
 fig_campbell.update_layout(
-    template="plotly_dark", height=450, margin=dict(l=10, r=10, t=10, b=10),
-    paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
-    xaxis=dict(title="Rotor Operational Speed (RPM)", titlefont=dict(color="#ffffff"), gridcolor="#1e293b"),
-    yaxis=dict(title="Frequency (Hz)", titlefont=dict(color="#ffffff"), range=[0, 2.2], gridcolor="#1e293b"),
+    template="plotly_dark", 
+    height=450, 
+    margin=dict(l=10, r=10, t=10, b=10),
+    paper_bgcolor='rgba(0,0,0,0)', 
+    plot_bgcolor='rgba(0,0,0,0)',
+    xaxis_title="Rotor Operational Speed (RPM)",
+    yaxis_title="Frequency (Hz)",
+    yaxis_range=[0, 2.2],
+    xaxis_gridcolor="#1e293b",
+    yaxis_gridcolor="#1e293b",
     legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
 )
 st.plotly_chart(fig_campbell, use_container_width=True)
@@ -116,7 +123,7 @@ st.plotly_chart(fig_campbell, use_container_width=True)
 st.markdown("---")
 
 # --- VISUALIZATION 2: RE-STRUCTURED SPECTRUM DENSITIES ---
-st.subheader("Accelerometer Spectral Cascade (Dynamic FFT Signal Tracking)")
+st.subheader("📈 Accelerometer Spectral Cascade (Dynamic FFT Signal Tracking)")
 
 freq_axis = np.linspace(0, 2.5, 600)
 structural_response = (1 / (1 + (freq_axis - omega_1)**2/0.002)) + (0.4 / (1 + (freq_axis - omega_2)**2/0.002))
@@ -127,9 +134,14 @@ total_signal = structural_response + forcing_response
 fig_fft = go.Figure()
 fig_fft.add_trace(go.Scatter(x=freq_axis, y=total_signal, name="Sensor Telemetry Power Spectrum", fill='tozeroy', line=dict(color="#00f2fe", width=2)))
 fig_fft.update_layout(
-    template="plotly_dark", height=350, margin=dict(l=10, r=10, t=10, b=10),
-    paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
-    xaxis=dict(title="Frequency Domain Axis (Hz)", gridcolor="#1e293b"),
-    yaxis=dict(title="Vibration Power Density (G²/Hz)", gridcolor="#1e293b")
+    template="plotly_dark", 
+    height=350, 
+    margin=dict(l=10, r=10, t=10, b=10),
+    paper_bgcolor='rgba(0,0,0,0)', 
+    plot_bgcolor='rgba(0,0,0,0)',
+    xaxis_title="Frequency Domain Axis (Hz)", 
+    yaxis_title="Vibration Power Density (G²/Hz)",
+    xaxis_gridcolor="#1e293b",
+    yaxis_gridcolor="#1e293b"
 )
 st.plotly_chart(fig_fft, use_container_width=True)
