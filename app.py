@@ -171,7 +171,6 @@ Z = z_mesh
 
 strain_intensity = (mode_deflection ** 2) * (crack_depth + 10)
 
-# CRITICAL FIX: Restructured the colorbar dict parameters to map to modern Plotly API specifications
 fig_3d = go.Figure(data=[go.Surface(
     x=X, y=Y, z=Z, 
     surfacecolor=strain_intensity, 
@@ -183,6 +182,7 @@ fig_3d = go.Figure(data=[go.Surface(
     )
 )])
 
+# CRITICAL FIX: Standardized scene typography dictionary references to fully clear Python 3.14 validation issues
 fig_3d.update_layout(
     template="plotly_dark",
     height=550,
@@ -190,9 +190,9 @@ fig_3d.update_layout(
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)',
     scene=dict(
-        xaxis=dict(title="Flapwise Deflection (m)", gridcolor="#1e293b", titlefont=dict(color="#64748b"), tickfont=dict(color="#475569")),
-        yaxis=dict(title="Thickness Profile (m)", gridcolor="#1e293b", titlefont=dict(color="#64748b"), tickfont=dict(color="#475569")),
-        zaxis=dict(title="Blade Span (m)", gridcolor="#1e293b", titlefont=dict(color="#64748b"), tickfont=dict(color="#475569")),
+        xaxis=dict(title=dict(text="Flapwise Deflection (m)", font=dict(color="#64748b")), gridcolor="#1e293b", tickfont=dict(color="#475569")),
+        yaxis=dict(title=dict(text="Thickness Profile (m)", font=dict(color="#64748b")), gridcolor="#1e293b", tickfont=dict(color="#475569")),
+        zaxis=dict(title=dict(text="Blade Span (m)", font=dict(color="#64748b")), gridcolor="#1e293b", tickfont=dict(color="#475569")),
         aspectratio=dict(x=1, y=1, z=2)
     )
 )
@@ -214,10 +214,8 @@ fig_campbell.update_layout(
     template="plotly_dark", height=400, margin=dict(l=10, r=10, t=10, b=10),
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)',
-    xaxis_title="Rotor Operational Speed (RPM)", yaxis_title="Frequency (Hz)", yaxis_range=[0, 2.2],
-    xaxis_gridcolor="#1e293b", yaxis_gridcolor="#1e293b",
-    xaxis_titlefont=dict(color="#64748b"), yaxis_titlefont=dict(color="#64748b"),
-    xaxis_tickfont=dict(color="#475569"), yaxis_tickfont=dict(color="#475569"),
+    xaxis=dict(title=dict(text="Rotor Operational Speed (RPM)", font=dict(color="#64748b")), gridcolor="#1e293b", tickfont=dict(color="#475569")),
+    yaxis=dict(title=dict(text="Frequency (Hz)", font=dict(color="#64748b")), range=[0, 2.2], gridcolor="#1e293b", tickfont=dict(color="#475569")),
     legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color="#cbd5e1"))
 )
 st.plotly_chart(fig_campbell, use_container_width=True)
@@ -238,10 +236,8 @@ fig_fft.update_layout(
     template="plotly_dark", height=350, margin=dict(l=10, r=10, t=10, b=10),
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)',
-    xaxis_title="Frequency Domain Axis (Hz)", yaxis_title="Vibration Power Density (G2/Hz)",
-    xaxis_gridcolor="#1e293b", yaxis_gridcolor="#1e293b",
-    xaxis_titlefont=dict(color="#64748b"), yaxis_titlefont=dict(color="#64748b"),
-    xaxis_tickfont=dict(color="#475569"), yaxis_tickfont=dict(color="#475569"),
+    xaxis=dict(title=dict(text="Frequency Domain Axis (Hz)", font=dict(color="#64748b")), gridcolor="#1e293b", tickfont=dict(color="#475569")),
+    yaxis=dict(title=dict(text="Vibration Power Density (G2/Hz)", font=dict(color="#64748b")), gridcolor="#1e293b", tickfont=dict(color="#475569")),
     legend=dict(font=dict(color="#cbd5e1"))
 )
 st.plotly_chart(fig_fft, use_container_width=True)
