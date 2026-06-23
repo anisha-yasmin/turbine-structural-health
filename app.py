@@ -2,91 +2,59 @@ import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
 
-# High-End Engineering Suite Configuration
-st.set_page_config(page_title="Wind Turbine SHM Platform", layout="wide", initial_sidebar_state="expanded")
+# Advanced Structural Analytics Suite Configuration
+st.set_page_config(page_title="Wind Turbine SHM Digital Twin", layout="wide")
 
-# --- CUSTOM CAD INTERFACE CSS OVERHAUL ---
+# --- INDUSTRIAL LIGHT MATRIX THEME STYLE SHEET ---
 st.markdown("""
     <style>
-    /* Main App Background Override */
     .main {
-        background-color: #060913 !important;
-        color: #f1f5f9 !important;
+        background-color: #f8fafc; 
+        color: #1e293b;
     }
-    
-    /* Sidebar Engineering Control Panel Styling */
     [data-testid="stSidebar"] {
-        background-color: #0b0f19 !important;
-        border-right: 1px solid #1e293b !important;
+        background-color: #0f172a; 
+        border-right: 1px solid #334155;
     }
     [data-testid="stSidebar"] *, div[data-baseweb="select"] * {
-        color: #cbd5e1 !important;
-        font-family: 'Inter', sans-serif;
+        color: #f8fafc !important; 
+        font-weight: 600;
     }
     
-    /* Custom CSS Cards: Telemetry Panels */
-    div[data-testid="stMetric"] {
-        background: rgba(15, 23, 42, 0.6) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
-        border: 1px solid rgba(56, 189, 248, 0.2) !important;
-        padding: 20px 24px !important;
-        border-radius: 4px !important;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4) !important;
-        transition: border 0.3s ease;
-    }
-    div[data-testid="stMetric"]:hover {
-        border: 1px solid rgba(56, 189, 248, 0.6) !important;
-    }
-    
-    /* Target Text Inside Metric Blocks to Prevent Ellipsis Cutoff */
-    div[data-testid="stMetricValue"] > div {
-        color: #38bdf8 !important;
-        font-family: 'JetBrains Mono', 'Courier New', monospace !important;
-        font-size: 1.6rem !important;
+    /* Optimized Metric Cards */
+    [data-testid="stMetricValue"] {
+        color: #dc2626 !important;
+        font-family: 'Courier New', monospace;
+        font-size: 1.5rem !important;
         font-weight: 700 !important;
         white-space: normal !important;
         word-break: break-word !important;
     }
-    label[data-testid="stMetricLabel"] > div > p {
-        color: #94a3b8 !important;
-        font-family: 'Inter', sans-serif !important;
+    [data-testid="stMetricLabel"] {
+        color: #475569 !important;
         font-size: 0.75rem !important;
-        font-weight: 600 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 1.5px !important;
-        white-space: normal !important;
-    }
-    
-    /* Horizontal Rule Separators */
-    hr {
-        border-color: rgba(30, 41, 59, 0.7) !important;
-    }
-    
-    /* Section Headers styling */
-    h1, h2, h3 {
-        font-family: 'Inter', sans-serif;
-        font-weight: 700 !important;
-        letter-spacing: -0.025em !important;
-    }
-    h1 {
-        color: #ffffff !important;
-    }
-    h3 {
-        color: #f1f5f9 !important;
-        font-size: 1.1rem !important;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        font-weight: 700;
+        white-space: normal !important;
     }
-    .stMarkdown p {
-        color: #64748b;
+    .stMetric {
+        background: #ffffff !important;
+        padding: 14px !important;
+        border-radius: 6px !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    h1, h2, h3 {
+        font-family: 'Inter', sans-serif;
+        font-weight: 800 !important;
+        color: #0f172a !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# Application Header Block
-st.title("ROTORDYNAMIC STRUCTURAL HEALTH MONITORING (SHM)")
-st.markdown("Predictive Aeroelasticity & Structural Dynamics Diagnostics Suite | Cantilever Composite Blade")
+st.title("ROTORDYNAMIC STRUCTURAL HEALTH MONITORING (SHM) PLATFORM")
+st.markdown("Computational Aeroelasticity & Structural Dynamics Diagnostics Suite | Cantilever Composite Blade")
 st.markdown("---")
 
 # --- SIDEBAR CONTROL INPUTS ---
@@ -113,7 +81,7 @@ freq_3P = 3 * freq_1P
 current_3P = 3 * (rpm / 60.0)
 
 is_resonant = abs(omega_1 - current_3P) < 0.08 or abs(omega_2 - current_3P) < 0.08
-resonance_status = "CRITICAL COUPLING" if is_resonant else "STABLE OPERATION"
+resonance_status = "CRITICAL RESONANCE" if is_resonant else "STRUCTURALLY STABLE"
 
 # Fatigue calculations via Miner's Rule
 stiffness_ratio = I_damaged / I_healthy
@@ -141,6 +109,7 @@ st.markdown("---")
 
 # --- VISUALIZATION 1: LIVE 3D STRUT DEFORMATION SOLVER ---
 st.subheader("3D Finite Element Deformation Mesh (Modal Displacement Analysis)")
+st.markdown("Real-time rendering of the fundamental flexural bending mode shape. Colors represent structural Von Mises strain concentrations.")
 
 # Generate 3D blade wireframe coordinates
 z_segments = 40
@@ -165,34 +134,30 @@ if is_resonant:
 
 delta_x = mode_deflection * scaling_factor
 
+# Wrap into 3D Cylindrical Surface Meshes
 X = chord_profile * np.cos(theta_mesh) + delta_x
 Y = thick_profile * np.sin(theta_mesh)
 Z = z_mesh
 
+# Strain calculation proportional to second derivative of displacement (bending curvature)
 strain_intensity = (mode_deflection ** 2) * (crack_depth + 10)
 
 fig_3d = go.Figure(data=[go.Surface(
     x=X, y=Y, z=Z, 
     surfacecolor=strain_intensity, 
-    colorscale="Plasma",
-    colorbar=dict(
-        title=dict(text="Relative Strain", font=dict(color="#94a3b8")),
-        tickfont=dict(color="#64748b"),
-        len=0.6
-    )
+    colorscale="Jet",
+    colorbar=dict(title="Relative Strain", len=0.6)
 )])
 
-# CRITICAL FIX: Standardized scene typography dictionary references to fully clear Python 3.14 validation issues
+# CRITICAL TYPO REMOVED: Auto-scaling enabled by omitting the 'range' field completely
 fig_3d.update_layout(
-    template="plotly_dark",
+    template="plotly_white",
     height=550,
     margin=dict(l=0, r=0, t=10, b=0),
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)',
     scene=dict(
-        xaxis=dict(title=dict(text="Flapwise Deflection (m)", font=dict(color="#64748b")), gridcolor="#1e293b", tickfont=dict(color="#475569")),
-        yaxis=dict(title=dict(text="Thickness Profile (m)", font=dict(color="#64748b")), gridcolor="#1e293b", tickfont=dict(color="#475569")),
-        zaxis=dict(title=dict(text="Blade Span (m)", font=dict(color="#64748b")), gridcolor="#1e293b", tickfont=dict(color="#475569")),
+        xaxis=dict(title="Flapwise Deflection (m)"),
+        yaxis=dict(title="Thickness Profile (m)"),
+        zaxis=dict(title="Blade Span (m)"),
         aspectratio=dict(x=1, y=1, z=2)
     )
 )
@@ -204,19 +169,17 @@ st.markdown("---")
 st.subheader("Rotordynamic Campbell Diagram (Critical Speed Mapping)")
 
 fig_campbell = go.Figure()
-fig_campbell.add_trace(go.Scatter(x=rpm_range, y=freq_1P, name="1P Rotor Order", line=dict(color="#38bdf8", width=1.5, dash="dash")))
-fig_campbell.add_trace(go.Scatter(x=rpm_range, y=freq_3P, name="3P Forcing Freq", line=dict(color="#f43f5e", width=2, dash="dot")))
-fig_campbell.add_trace(go.Scatter(x=rpm_range, y=np.ones_like(rpm_range) * omega_1, name="1st Flexural Mode (w1)", line=dict(color="#34d399", width=2.5)))
-fig_campbell.add_trace(go.Scatter(x=rpm_range, y=np.ones_like(rpm_range) * omega_2, name="2nd Flexural Mode (w2)", line=dict(color="#a78bfa", width=2.5)))
-fig_campbell.add_trace(go.Scatter(x=[rpm, rpm], y=[0, 2.5], name="Operational RPM", line=dict(color="#ffffff", width=1.5)))
+fig_campbell.add_trace(go.Scatter(x=rpm_range, y=freq_1P, name="1P Rotor Order", line=dict(color="#1e3a8a", width=2, dash="dash")))
+fig_campbell.add_trace(go.Scatter(x=rpm_range, y=freq_3P, name="3P Forcing Freq", line=dict(color="#dc2626", width=2.5, dash="dot")))
+fig_campbell.add_trace(go.Scatter(x=rpm_range, y=np.ones_like(rpm_range) * omega_1, name="1st Flexural Mode (w1)", line=dict(color="#16a34a", width=3)))
+fig_campbell.add_trace(go.Scatter(x=rpm_range, y=np.ones_like(rpm_range) * omega_2, name="2nd Flexural Mode (w2)", line=dict(color="#7c3aed", width=3)))
+fig_campbell.add_trace(go.Scatter(x=[rpm, rpm], y=[0, 2.5], name="Current Operational RPM", line=dict(color="#475569", width=2)))
 
 fig_campbell.update_layout(
-    template="plotly_dark", height=400, margin=dict(l=10, r=10, t=10, b=10),
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)',
-    xaxis=dict(title=dict(text="Rotor Operational Speed (RPM)", font=dict(color="#64748b")), gridcolor="#1e293b", tickfont=dict(color="#475569")),
-    yaxis=dict(title=dict(text="Frequency (Hz)", font=dict(color="#64748b")), range=[0, 2.2], gridcolor="#1e293b", tickfont=dict(color="#475569")),
-    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color="#cbd5e1"))
+    template="plotly_white", height=400, margin=dict(l=10, r=10, t=10, b=10),
+    xaxis_title="Rotor Operational Speed (RPM)", yaxis_title="Frequency (Hz)", yaxis_range=[0, 2.2],
+    xaxis_gridcolor="#e2e8f0", yaxis_gridcolor="#e2e8f0",
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
 )
 st.plotly_chart(fig_campbell, use_container_width=True)
 
@@ -231,13 +194,10 @@ forcing_response = (0.8 / (1 + (freq_axis - (3 * (rpm / 60.0)))**2/(0.001 if is_
 total_signal = structural_response + forcing_response
 
 fig_fft = go.Figure()
-fig_fft.add_trace(go.Scatter(x=freq_axis, y=total_signal, name="Sensor Telemetry", fill='tozeroy', line=dict(color="#0ea5e9", width=2), fillcolor="rgba(14, 165, 233, 0.08)"))
+fig_fft.add_trace(go.Scatter(x=freq_axis, y=total_signal, name="Sensor Telemetry", fill='tozeroy', line=dict(color="#0284c7", width=2), fillcolor="rgba(2, 132, 199, 0.15)"))
 fig_fft.update_layout(
-    template="plotly_dark", height=350, margin=dict(l=10, r=10, t=10, b=10),
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)',
-    xaxis=dict(title=dict(text="Frequency Domain Axis (Hz)", font=dict(color="#64748b")), gridcolor="#1e293b", tickfont=dict(color="#475569")),
-    yaxis=dict(title=dict(text="Vibration Power Density (G2/Hz)", font=dict(color="#64748b")), gridcolor="#1e293b", tickfont=dict(color="#475569")),
-    legend=dict(font=dict(color="#cbd5e1"))
+    template="plotly_white", height=350, margin=dict(l=10, r=10, t=10, b=10),
+    xaxis_title="Frequency Domain Axis (Hz)", yaxis_title="Vibration Power Density (G2/Hz)",
+    xaxis_gridcolor="#e2e8f0", yaxis_gridcolor="#e2e8f0"
 )
 st.plotly_chart(fig_fft, use_container_width=True)
