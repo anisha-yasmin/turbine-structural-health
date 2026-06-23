@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 # High-End Structural Analytics Suite UI Setup
 st.set_page_config(page_title="Wind Turbine SHM Digital Twin", layout="wide")
@@ -78,9 +77,9 @@ resonance_status = "CRITICAL RESONANCE DETECTED" if is_resonant else "STRUCTURAL
 # --- SYSTEM METRICS PANEL ---
 col1, col2, col3, col4 = st.columns(4)
 with col1:
-    st.metric(label="1st Mode Natural Freq (ω_1)", value=f"{omega_1:.3f} Hz")
+    st.metric(label="1st Mode Natural Freq (ω1)", value=f"{omega_1:.3f} Hz")
 with col2:
-    st.metric(label="2nd Mode Natural Freq (ω_2)", value=f"{omega_2:.3f} Hz")
+    st.metric(label="2nd Mode Natural Freq (ω2)", value=f"{omega_2:.3f} Hz")
 with col3:
     st.metric(label="3P Forcing Excitation", value=f"{current_3P:.3f} Hz")
 with col4:
@@ -89,8 +88,8 @@ with col4:
 st.markdown("---")
 
 # --- VISUALIZATION 1: INTERACTIVE CAMPBELL DIAGRAM ---
-st.subheader("📊 Rotordynamic Campbell Diagram (Critical Speed Mapping)")
-st.markdown("The intersections between the operational forcing frequencies (1P, 3P lines) and the structural natural frequencies ($\omega_1$, $\omega_2$) indicate mechanical resonance speeds.")
+st.subheader("Rotordynamic Campbell Diagram (Critical Speed Mapping)")
+st.markdown("The intersections between the operational forcing frequencies (1P, 3P lines) and the structural natural frequencies (ω1, ω2) indicate mechanical resonance speeds.")
 
 fig_campbell = go.Figure()
 
@@ -98,9 +97,9 @@ fig_campbell = go.Figure()
 fig_campbell.add_trace(go.Scatter(x=rpm_range, y=freq_1P, name="1P Rotor Order (Unbalance Forcing)", line=dict(color="#60a5fa", width=2, dash="dash")))
 fig_campbell.add_trace(go.Scatter(x=rpm_range, y=freq_3P, name="3P Blade Passing Frequency (Aerodynamic Forcing)", line=dict(color="#f43f5e", width=2.5, dash="dot")))
 
-# Plot Stiffness Frequency Limits
-fig_campbell.add_trace(go.Scatter(x=rpm_range, y=np.ones_like(rpm_range) * omega_1, name="1st Flexural Mode (Flapwise)", line=dict(color="#34d399", width=3)))
-fig_campbell.add_trace(go.Scatter(x=rpm_range, y=np.ones_like(rpm_range) * omega_2, name="2nd Flexural Mode (Edgewise)", line=dict(color="#a78bfa", width=3)))
+# Plot Stiffness Frequency Limits (Replaced raw LaTeX string delimiters to prevent ValueError validation crash)
+fig_campbell.add_trace(go.Scatter(x=rpm_range, y=np.ones_like(rpm_range) * omega_1, name="1st Flexural Mode (Flapwise ω1)", line=dict(color="#34d399", width=3)))
+fig_campbell.add_trace(go.Scatter(x=rpm_range, y=np.ones_like(rpm_range) * omega_2, name="2nd Flexural Mode (Edgewise ω2)", line=dict(color="#a78bfa", width=3)))
 
 # Plot Current Operational State Indicator
 fig_campbell.add_trace(go.Scatter(x=[rpm, rpm], y=[0, 2.5], name="Current Operational RPM", line=dict(color="#ffffff", width=2)))
@@ -120,7 +119,6 @@ st.markdown("---")
 st.subheader("Accelerometer Spectral Cascade (Dynamic FFT Signal Tracking)")
 
 freq_axis = np.linspace(0, 2.5, 600)
-# Dynamic signal creation modeling real structural decay amplitude spikes
 structural_response = (1 / (1 + (freq_axis - omega_1)**2/0.002)) + (0.4 / (1 + (freq_axis - omega_2)**2/0.002))
 forcing_response = (0.8 / (1 + (freq_axis - current_3P)**2/(0.001 if is_resonant else 0.01)))
 
